@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  SNSTopicArn:
+    Description: "ARN of SNS topic to send the notification to"
+    Type: String
+Resources:
+  EventRule:
+    Type: "AWS::Events::Rule"
+    Properties:
+      State: ENABLED
+      EventPattern:
+        detail-type:
+          - AWS Console Sign In via CloudTrail
+        detail:
+          userIdentity:
+            type:
+              - Root
+      Targets:
+        - Arn: !Ref SNSTopicArn
+          Id: notification
